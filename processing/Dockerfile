@@ -19,6 +19,7 @@ COPY . /app
 # Change permissions and become a non-privileged user
 RUN chown -R nobody:nogroup /app
 RUN chown -R nobody:nogroup /app/data && chmod -R 777 /app/data
+RUN chown -R nobody:nogroup /app/data/processing && chmod -R 777 /app/data/processing
 
 USER nobody
 
