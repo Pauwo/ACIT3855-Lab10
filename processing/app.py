@@ -63,10 +63,14 @@ DEFAULT_STATS = {
 # --------------------------------------------------
 def read_existing_stats():
     """Read existing statistics from JSON file or return default stats."""
-    if os.path.exists(STATS_FILE):
-        with open(STATS_FILE, "r") as file:
-            return json.load(file)
-    return DEFAULT_STATS.copy()
+    if not os.path.exists(STATS_FILE):
+        Path(STATS_FILE).parent.mkdir(parents=True, exist_ok=True)  # Ensure directory exists
+        with open(STATS_FILE, "w") as file:
+            json.dump(DEFAULT_STATS, file, indent=4)
+        return DEFAULT_STATS.copy()
+
+    with open(STATS_FILE, "r") as file:
+        return json.load(file)
 
 def write_stats(stats):
     """Write updated statistics to JSON file."""
