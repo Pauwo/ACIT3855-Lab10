@@ -3,6 +3,7 @@ FROM python:3
 LABEL maintainer="rhernandez35@my.bcit.ca"
 
 RUN mkdir /app
+RUN mkdir -p /app/data/processing
 
 # Copy just the requirements.txt first to leverage Docker cache
 # on `pip install`
@@ -17,6 +18,8 @@ COPY . /app
 
 # Change permissions and become a non-privileged user
 RUN chown -R nobody:nogroup /app
+RUN chown -R nobody:nogroup /app/data && chmod -R 777 /app/data
+
 USER nobody
 
 # Tells on which port the service listens in the container
