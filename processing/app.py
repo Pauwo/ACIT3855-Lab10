@@ -15,7 +15,7 @@ from pathlib import Path
 from connexion import FlaskApp
 
 
-app = FlaskApp(__name__)
+app = connexion.FlaskApp(__name__, specification_dir="")
 
 app.add_middleware(
     CORSMiddleware,
@@ -184,7 +184,7 @@ def init_scheduler():
 # --------------------------------------------------
 # Set Up the API with Connexion
 # --------------------------------------------------
-app = connexion.FlaskApp(__name__, specification_dir="")
+# app = connexion.FlaskApp(__name__, specification_dir="")
 app.add_api("openapi.yaml", strict_validation=True, validate_responses=True)
 
 # --------------------------------------------------
