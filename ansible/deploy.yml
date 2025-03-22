@@ -24,13 +24,13 @@
         - /home/paulo/lab10/logs
       become: true
 
-    # - name: Ensure event_stats.json has correct permissions
-    #   ansible.builtin.file:
-    #     path: /home/paulo/lab10/data/event_stats.json
-    #     state: touch  
-    #     mode: "0666"  
-    #     owner: nobody  
-    #     group: nogroup  
+    - name: Ensure event_stats.json has correct permissions
+      ansible.builtin.file:
+        path: /home/paulo/lab10/data/processing/event_stats.json
+        state: touch  
+        mode: "0666"  
+        owner: nobody  
+        group: nogroup  
 
 
     - name: Copy all files from prod to test
