@@ -9,6 +9,8 @@ from starlette.middleware.cors import CORSMiddleware
 from pathlib import Path
 from connexion import FlaskApp
 import random
+from datetime import datetime
+import pytz 
 
 
 app = FlaskApp(__name__)
@@ -109,9 +111,13 @@ def get_event_stats():
         elif data.get("type") == "passenger_checkin":
             count_passenger_checkin += 1
 
+    now = datetime.now(pytz.utc)
+    formatted_time = now.strftime("%Y-%m-%d %H:%M:%S")
+
     stats = {
         "num_flight_schedules": count_flight_schedule,
-        "num_passenger_checkins": count_passenger_checkin
+        "num_passenger_checkins": count_passenger_checkin,
+        "last_updated": formatted_time
     }
     return stats, 200
 
