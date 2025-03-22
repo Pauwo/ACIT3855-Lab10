@@ -13,7 +13,7 @@ from datetime import datetime
 import pytz 
 
 
-app = FlaskApp(__name__)
+app = connexion.FlaskApp(__name__, specification_dir="./")
 
 app.add_middleware(
     CORSMiddleware,
@@ -164,7 +164,7 @@ def get_random_passenger_checkin():
 
 
 # Set up the Connexion application and link the OpenAPI specification
-app = connexion.FlaskApp(__name__, specification_dir="./")
+# app = connexion.FlaskApp(__name__, specification_dir="./")
 app.add_api("openapi.yaml", strict_validation=True, validate_responses=True)
 
 if __name__ == "__main__":
