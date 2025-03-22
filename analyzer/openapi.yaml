@@ -93,6 +93,49 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Stats'
+
+  /flights/schedule/random:
+    get:
+      summary: Gets a random flight schedule event
+      operationId: app.get_random_flight_schedule
+      responses:
+        '200':
+          description: Successfully returned random flight schedule
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlightSchedule'
+        '404':
+          description: No events found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+  /passenger/checkin/random:
+    get:
+      summary: Gets a random passenger check-in event
+      operationId: app.get_random_passenger_checkin
+      responses:
+        '200':
+          description: Successfully returned random check-in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PassengerCheckin'
+        '404':
+          description: No events found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
 components:
   schemas:
     FlightSchedule:
@@ -148,11 +191,24 @@ components:
         trace_id:
           type: integer
           example: 987654321
+    # Stats:
+    #   type: object
+    #   required:
+    #     - num_flight_schedules
+    #     - num_passenger_checkins
+    #   properties:
+    #     num_flight_schedules:
+    #       type: integer
+    #       example: 10
+    #     num_passenger_checkins:
+    #       type: integer
+    #       example: 5
     Stats:
       type: object
       required:
         - num_flight_schedules
         - num_passenger_checkins
+        - last_updated
       properties:
         num_flight_schedules:
           type: integer
@@ -160,3 +216,7 @@ components:
         num_passenger_checkins:
           type: integer
           example: 5
+        last_updated:
+          type: string
+          format: date-time
+          example: "2024-03-15T14:30:00Z"

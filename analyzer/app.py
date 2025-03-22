@@ -8,6 +8,7 @@ from connexion.middleware import MiddlewarePosition
 from starlette.middleware.cors import CORSMiddleware
 from pathlib import Path
 from connexion import FlaskApp
+import random
 
 
 app = FlaskApp(__name__)
@@ -113,6 +114,47 @@ def get_event_stats():
         "num_passenger_checkins": count_passenger_checkin
     }
     return stats, 200
+
+
+def get_random_flight_schedule():
+    """GET /flights/schedule/random"""
+    client = KafkaClient(hosts=f"{APP_CONFIG['events']['hostname']}:{APP_CONFIG['events']['port']}")
+    topic = client.topics[str.encode(APP_CONFIG["events"]["topic"])]
+    consumer = topic.get_simple_consumer(
+        reset_offset_on_start=True,
+        consumer_timeout_ms=1000
+    )
+    
+    events = []
+    for msg in consumer:
+        message = msg.value.decode("utf-8")
+        data = json.loads(message)
+        if data.get("type") == "flight_schedule":
+            events.append(data["payload"])
+    
+    if not events:
+        return {"message": "No flight schedules found!"}, 404
+    return random.choice(events), 200
+
+def get_random_passenger_checkin():
+    """GET /passenger/checkin/random"""
+    client = KafkaClient(hosts=f"{APP_CONFIG['events']['hostname']}:{APP_CONFIG['events']['port']}")
+    topic = client.topics[str.encode(APP_CONFIG["events"]["topic"])]
+    consumer = topic.get_simple_consumer(
+        reset_offset_on_start=True,
+        consumer_timeout_ms=1000
+    )
+    
+    events = []
+    for msg in consumer:
+        message = msg.value.decode("utf-8")
+        data = json.loads(message)
+        if data.get("type") == "passenger_checkin":
+            events.append(data["payload"])
+    
+    if not events:
+        return {"message": "No passenger check-ins found!"}, 404
+    return random.choice(events), 200
 
 
 # Set up the Connexion application and link the OpenAPI specification

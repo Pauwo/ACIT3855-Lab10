@@ -9,6 +9,7 @@
         dest: /home/paulo/lab10
         accept_hostkey: yes
         version: main
+        force: yes
         key_file: ~/.ssh/id_ed25519
 
     - name: Create 'data' and 'logs' directories
