@@ -84,6 +84,9 @@ def get_stats():
     """Retrieve processed event statistics from JSON file."""
     logger.info("GET request received for /stats")
 
+    if connexion.request.method == 'HEAD':
+        return NoContent, 200
+
     if not os.path.exists(STATS_FILE):
         logger.error("Statistics file not found.")
         return {"message": "Statistics do not exist"}, 404
